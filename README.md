@@ -343,6 +343,36 @@ if ( device.platform == 'android' || device.platform == 'Android' || device.plat
         pushTransportReadyCallback: replace_with_pushTransportReady_callback,
         launchApplicationOnPush: true
     });
+} else if ( device.platform == 'iOS'){
+    pushNotification.register(
+    tokenHandler,
+    errorHandler,
+    {
+        "badge":"true",
+        "sound":"true",
+        "alert":"true",
+        "ecb":"onNotificationAPN",
+		"categories": [
+			{
+				"identifier": "new-message",
+				"actions": [
+					{
+						"title': 'View',
+						"identifier': "view",
+						"authentication": "false",
+						"mode": "foreground"
+					},
+					{
+						"title": "Delete",
+						"identifier": "delete",
+						"authentication': "false",
+						"destructive": "true",
+						"mode": "background"
+					}
+				]
+			}
+		]
+    });
 } else {
     pushNotification.register(
     tokenHandler,
@@ -404,6 +434,18 @@ function onNotificationAPN (event) {
 	{
 		var snd = new Media(event.sound);
 		snd.play();
+	}
+	
+	// iOS8 only
+	if ( event.category )
+	{
+		notification action category
+	}
+	
+	// iOS8 only
+	if ( event.identifier )
+	{
+		notification action identifier
 	}
 
 	if ( event.badge )
